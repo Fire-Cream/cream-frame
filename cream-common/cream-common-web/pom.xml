@@ -5,18 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.cream</groupId>
-        <artifactId>cream-frame</artifactId>
+        <artifactId>cream-common</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>cream-common</artifactId>
-    <packaging>pom</packaging>
-    <description>common 模块</description>
-
-    <!-- 子模块 -->
-    <modules>
-        <module>cream-common-web</module>
-    </modules>
+    <artifactId>cream-common-web</artifactId>
+    <description>web 模块</description>
 
     <properties>
         <java.version>21</java.version>
@@ -24,6 +18,15 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- 修复漏洞 -->
+        <jackson-core.version>2.21.1</jackson-core.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
