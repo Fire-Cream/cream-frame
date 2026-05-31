@@ -21,9 +21,15 @@
     </properties>
 
     <dependencies>
+        <!-- Web 模块 -->
         <dependency>
             <groupId>com.cream</groupId>
             <artifactId>cream-common-web</artifactId>
+        </dependency>
+        <!-- MPJ 模块 -->
+        <dependency>
+            <groupId>com.cream</groupId>
+            <artifactId>cream-common-mpj</artifactId>
         </dependency>
     </dependencies>
 </project>
