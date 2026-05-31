@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "mpj.beauty-show",
+      "type": "java.lang.Boolean",
+      "description": "Do you want to turn on SQL beautification.",
+      "defaultValue": true
+    }
+  ]
+}

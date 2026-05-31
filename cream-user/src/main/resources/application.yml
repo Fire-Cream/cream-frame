@@ -38,3 +38,5 @@ spring:
         # 防火墙
         wall:
           enabled: true
+mpj:
+  beauty-show: true
