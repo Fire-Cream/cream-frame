@@ -31,16 +31,49 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- 项目版本 -->
         <revision>1.0.0-SNAPSHOT</revision>
+        <!-- 数据库相关依赖 -->
+        <druid-boot3.version>1.2.28</druid-boot3.version>
+        <mybatis-plus-join.version>1.5.7</mybatis-plus-join.version>
     </properties>
 
     <!-- 管理依赖版本，子模块不用去管理版本了 -->
     <dependencyManagement>
         <dependencies>
+            <!-- Maven Bom -->
+            <!-- Mybatis Plus Bom -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-bom</artifactId>
+                <version>3.5.16</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- 数据库相关依赖 -->
+            <!-- Druid 数据库连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-3-starter</artifactId>
+                <version>1.2.28</version>
+            </dependency>
+            <!-- Mybatis Plus 表连接增强 -->
+            <dependency>
+                <groupId>com.github.yulichang</groupId>
+                <artifactId>mybatis-plus-join-boot-starter</artifactId>
+                <version>1.5.7</version>
+            </dependency>
+
             <!-- 项目模块 -->
             <!-- Web 模块 -->
             <dependency>
                 <groupId>com.cream</groupId>
                 <artifactId>cream-common-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- MPJ 模块 -->
+            <dependency>
+                <groupId>com.cream</groupId>
+                <artifactId>cream-common-mpj</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>
@@ -62,14 +95,22 @@
         <resources>
             <resource>
                 <directory>src/main/java</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 不写 includes，默认包含该目录下所有文件 -->
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.yml</include>
+                    <include>**/*.yaml</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
         </resources>
+
     </build>
 
 </project>
