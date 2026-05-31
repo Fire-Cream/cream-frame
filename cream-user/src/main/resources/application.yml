@@ -1,0 +1,40 @@
+server:
+  port: 8080
+spring:
+  # 数据源配置
+  datasource:
+    # 路径
+    url: jdbc:mysql://10.99.11.200:3306/cream-frame?serverTimeZone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8
+    # 驱动
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 用户名
+    username: root
+    # 密码
+    password: 123456
+    # 连接池类型
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 连接池配置
+    druid:
+      # 初始化连接数
+      initial-size: 20
+      # 最小连接数
+      min-idle: 20
+      # 最大连接数
+      max-active: 100
+      # 最大等待时间
+      max-wait: 60000
+      # 图形化监控
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: admin
+        login-password: 123456
+      # 拦截器
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 2000
+        # 防火墙
+        wall:
+          enabled: true
