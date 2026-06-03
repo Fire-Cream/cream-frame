@@ -1,6 +1,7 @@
 package com.cream.user.service;
 
 import com.cream.user.entity.dto.UserDto;
+import com.cream.web.entity.Result;
 
 /**
  * 用户 Service
@@ -10,5 +11,5 @@ import com.cream.user.entity.dto.UserDto;
  */
 public interface UserService {
 
-    int addUser(UserDto userDto);
+    Result<String> addUser(UserDto userDto);
 }

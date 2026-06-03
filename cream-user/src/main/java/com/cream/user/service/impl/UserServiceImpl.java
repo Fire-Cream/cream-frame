@@ -4,6 +4,7 @@ import com.cream.user.entity.dto.UserDto;
 import com.cream.user.entity.po.UserPo;
 import com.cream.user.mapper.UserMapper;
 import com.cream.user.service.UserService;
+import com.cream.web.entity.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,10 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public int addUser(UserDto userDto) {
+    public Result<String> addUser(UserDto userDto) {
         UserPo userPo = new UserPo();
         BeanUtils.copyProperties(userDto, userPo);
-        return userMapper.insert(userPo);
+        userMapper.insert(userPo);
+        return Result.ok();
     }
 }
