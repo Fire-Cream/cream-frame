@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class BaseEntity implements Serializable {
 
     @TableField(fill = FieldFill.INSERT)
-    private Integer deteled;
+    private Integer deleted;
 
     @TableField(fill = FieldFill.INSERT)
     private String createBy;
