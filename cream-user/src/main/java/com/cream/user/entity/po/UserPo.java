@@ -1,9 +1,9 @@
 package com.cream.user.entity.po;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.cream.mpj.entity.BaseEntity;
 import lombok.Data;
-
-import java.time.LocalDateTime;
+import lombok.EqualsAndHashCode;
 
 /**
  * 用户 Po
@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("user")
-public class UserPo {
+@EqualsAndHashCode(callSuper = true)
+public class UserPo extends BaseEntity {
 
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
@@ -21,22 +22,4 @@ public class UserPo {
     private String name;
 
     private Integer age;
-
-    @TableField(fill = FieldFill.INSERT)
-    private Integer deteled;
-
-    @TableField(fill = FieldFill.INSERT)
-    private String createBy;
-
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
-    @TableField(fill = FieldFill.UPDATE)
-    private String updateBy;
-
-    @TableField(fill = FieldFill.UPDATE)
-    private LocalDateTime updateTime;
-
-    @TableField(fill = FieldFill.INSERT)
-    private Integer version;
 }
