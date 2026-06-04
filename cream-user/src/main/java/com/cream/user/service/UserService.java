@@ -11,5 +11,7 @@ import com.cream.web.entity.Result;
  */
 public interface UserService {
 
-    Result<String> addUser(UserDto userDto);
+    Result<String> saveOne(UserDto userDto);
+
+    Result<String> deleteOne(String id);
 }
