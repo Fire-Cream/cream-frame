@@ -2,6 +2,7 @@ package com.cream.mpj.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Data
 public class BaseEntity implements Serializable {
 
+    @TableLogic
     @TableField(fill = FieldFill.INSERT)
     private Integer deleted;
 
