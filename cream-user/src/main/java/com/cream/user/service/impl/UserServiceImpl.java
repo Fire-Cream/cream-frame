@@ -1,11 +1,12 @@
 package com.cream.user.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cream.mpj.entity.PageResult;
 import com.cream.user.entity.dto.UserDto;
 import com.cream.user.entity.po.UserPo;
 import com.cream.user.mapper.UserMapper;
 import com.cream.user.service.UserService;
-import com.cream.web.entity.Result;
-import com.cream.web.enums.ResultEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -23,24 +24,23 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public Result<String> saveOne(UserDto userDto) {
+    public int saveOne(UserDto userDto) {
         UserPo userPo = new UserPo();
         BeanUtils.copyProperties(userDto, userPo);
-        int insert = userMapper.insert(userPo);
-        if (insert > 0) {
-            return Result.ok(ResultEnum.SUCCESS.getCode(), "保存成功");
-        } else {
-            return Result.ok(ResultEnum.ERROR.getCode(), "保存失败");
-        }
+        return userMapper.insert(userPo);
     }
 
     @Override
-    public Result<String> deleteOne(String id) {
-        int delete = userMapper.deleteById(id);
-        if (delete > 0) {
-            return Result.ok(ResultEnum.SUCCESS.getCode(), "删除成功");
-        } else {
-            return Result.ok(ResultEnum.ERROR.getCode(), "删除失败");
-        }
+    public int deleteOne(String id) {
+        return userMapper.deleteById(id);
+    }
+
+    @Override
+    public PageResult<UserPo> page(UserDto userDto) {
+        IPage<UserPo> userPoIPage = new Page<>(userDto.getPageIndex(), userDto.getPageSize());
+        IPage<UserPo> userPage = userMapper.getUserPage(userPoIPage);
+        PageResult<UserPo> userPoPageResult = new PageResult<>();
+        userPoPageResult.loadData(userPage);
+        return userPoPageResult;
     }
 }

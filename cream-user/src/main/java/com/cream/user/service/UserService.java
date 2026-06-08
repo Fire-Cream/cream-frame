@@ -1,7 +1,8 @@
 package com.cream.user.service;
 
+import com.cream.mpj.entity.PageResult;
 import com.cream.user.entity.dto.UserDto;
-import com.cream.web.entity.Result;
+import com.cream.user.entity.po.UserPo;
 
 /**
  * 用户 Service
@@ -11,7 +12,9 @@ import com.cream.web.entity.Result;
  */
 public interface UserService {
 
-    Result<String> saveOne(UserDto userDto);
+    int saveOne(UserDto userDto);
 
-    Result<String> deleteOne(String id);
+    int deleteOne(String id);
+
+    PageResult<UserPo> page(UserDto userDto);
 }
