@@ -2,6 +2,7 @@ package com.cream.mpj.entity;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -14,6 +15,7 @@ import java.util.List;
  * @since 2026-06-08 22:13
  */
 @Data
+@NoArgsConstructor
 public class PageResult<T> implements Serializable {
 
     private Long total;
@@ -26,12 +28,11 @@ public class PageResult<T> implements Serializable {
 
     private List<T> records = Collections.emptyList();
 
-    public void loadData(IPage<T> records){
-       this.setCurrent(records.getCurrent());
-       this.setPages(records.getPages());
-       this.setSize(records.getSize());
-       this.setTotal(records.getTotal());
-       this.setRecords(records.getRecords());
+    public PageResult(IPage<T> records) {
+        this.setCurrent(records.getCurrent());
+        this.setPages(records.getPages());
+        this.setSize(records.getSize());
+        this.setTotal(records.getTotal());
+        this.setRecords(records.getRecords());
     }
-
 }

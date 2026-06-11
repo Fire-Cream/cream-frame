@@ -1,7 +1,7 @@
 package com.cream.web.entity;
 
-import com.cream.web.enums.ResultEnum;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
@@ -35,8 +35,8 @@ public class Result<T> implements Serializable {
     public static Result<String> ok() {
         Result<String> result = new Result<>();
         result.setSuccess(true);
-        result.setCode(ResultEnum.SUCCESS.getCode());
-        result.setMessage(ResultEnum.SUCCESS.getMessage());
+        result.setCode(HttpStatus.OK.value());
+        result.setMessage(HttpStatus.OK.getReasonPhrase());
         return result;
     }
 
@@ -51,8 +51,8 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> ok(T data) {
         Result<T> result = new Result<>();
         result.setSuccess(true);
-        result.setCode(ResultEnum.SUCCESS.getCode());
-        result.setMessage(ResultEnum.SUCCESS.getMessage());
+        result.setCode(HttpStatus.OK.value());
+        result.setMessage(HttpStatus.OK.getReasonPhrase());
         result.setData(data);
         return result;
     }
@@ -60,7 +60,7 @@ public class Result<T> implements Serializable {
     /**
      * 响应成功（不含数据）
      *
-     * @param code 响应码
+     * @param code    响应码
      * @param message 响应消息
      * @return com.cream.web.entity.Result<java.lang.String>
      * @author Cream
@@ -77,21 +77,21 @@ public class Result<T> implements Serializable {
     /**
      * 响应成功（不含数据）
      *
-     * @param resultEnum 响应枚举
+     * @param httpStatus 响应枚举
      * @return com.cream.web.entity.Result<java.lang.String>
      * @author Cream
      * @since 2026-06-03 21:24
      */
-    public static Result<String> ok(ResultEnum resultEnum) {
-        return ok(resultEnum.getCode(), resultEnum.getMessage());
+    public static Result<String> ok(HttpStatus httpStatus) {
+        return ok(httpStatus.value(), httpStatus.getReasonPhrase());
     }
 
     /**
      * 响应成功（包含数据）
      *
-     * @param code 响应码
+     * @param code    响应码
      * @param message 响应消息
-     * @param data 需要返回的数据
+     * @param data    需要返回的数据
      * @return com.cream.web.entity.Result<T>
      * @author Cream
      * @since 2026-06-03 21:24
@@ -108,14 +108,14 @@ public class Result<T> implements Serializable {
     /**
      * 响应成功（包含数据）
      *
-     * @param resultEnum 响应枚举
-     * @param data 需要返回的数据
+     * @param httpStatus 响应枚举
+     * @param data       需要返回的数据
      * @return com.cream.web.entity.Result<T>
      * @author Cream
      * @since 2026-06-03 21:24
      */
-    public static <T> Result<T> ok(ResultEnum resultEnum, T data) {
-        return ok(resultEnum.getCode(), resultEnum.getMessage(), data);
+    public static <T> Result<T> ok(HttpStatus httpStatus, T data) {
+        return ok(httpStatus.value(), httpStatus.getReasonPhrase(), data);
     }
 
     /**
@@ -128,8 +128,8 @@ public class Result<T> implements Serializable {
     public static Result<String> fail() {
         Result<String> result = new Result<>();
         result.setSuccess(false);
-        result.setCode(ResultEnum.ERROR.getCode());
-        result.setMessage(ResultEnum.ERROR.getMessage());
+        result.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        result.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         return result;
     }
 
@@ -144,8 +144,8 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> fail(T data) {
         Result<T> result = new Result<>();
         result.setSuccess(false);
-        result.setCode(ResultEnum.ERROR.getCode());
-        result.setMessage(ResultEnum.ERROR.getMessage());
+        result.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        result.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         result.setData(data);
         return result;
     }
@@ -153,7 +153,7 @@ public class Result<T> implements Serializable {
     /**
      * 响应失败（不含数据）
      *
-     * @param code 响应码
+     * @param code    响应码
      * @param message 响应消息
      * @return com.cream.web.entity.Result<java.lang.String>
      * @author Cream
@@ -170,21 +170,21 @@ public class Result<T> implements Serializable {
     /**
      * 响应失败（不含数据）
      *
-     * @param resultEnum 响应枚举
+     * @param httpStatus 响应枚举
      * @return com.cream.web.entity.Result<java.lang.String>
      * @author Cream
      * @since 2026-06-03 21:24
      */
-    public static Result<String> fail(ResultEnum resultEnum) {
-        return ok(resultEnum.getCode(), resultEnum.getMessage());
+    public static Result<String> fail(HttpStatus httpStatus) {
+        return ok(httpStatus.value(), httpStatus.getReasonPhrase());
     }
 
     /**
      * 响应失败（包含数据）
      *
-     * @param code 响应码
+     * @param code    响应码
      * @param message 响应消息
-     * @param data 需要返回的数据
+     * @param data    需要返回的数据
      * @return com.cream.web.entity.Result<T>
      * @author Cream
      * @since 2026-06-03 21:24
@@ -201,14 +201,14 @@ public class Result<T> implements Serializable {
     /**
      * 响应失败（包含数据）
      *
-     * @param resultEnum 响应枚举
-     * @param data 需要返回的数据
+     * @param httpStatus 响应枚举
+     * @param data       需要返回的数据
      * @return com.cream.web.entity.Result<T>
      * @author Cream
      * @since 2026-06-03 21:24
      */
-    public static <T> Result<T> fail(ResultEnum resultEnum, T data) {
-        return fail(resultEnum.getCode(), resultEnum.getMessage(), data);
+    public static <T> Result<T> fail(HttpStatus httpStatus, T data) {
+        return fail(httpStatus.value(), httpStatus.getReasonPhrase(), data);
     }
 
 }

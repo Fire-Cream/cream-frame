@@ -15,8 +15,9 @@
 
     <!-- 子模块 -->
     <modules>
-        <module>cream-common-web</module>
+        <module>cream-common-base</module>
         <module>cream-common-mpj</module>
+        <module>cream-common-web</module>
     </modules>
 
     <properties>

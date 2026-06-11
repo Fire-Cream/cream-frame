@@ -1,0 +1,133 @@
+package ${package.Controller};
+
+import ${package.Parent}.entity.po.${entity};
+import ${package.Parent}.entity.dto.save.${entity}SaveDto;
+import ${package.Parent}.entity.dto.update.${entity}UpdateDto;
+import ${package.Parent}.entity.dto.query.${entity}QueryPageDto;
+import ${package.Parent}.entity.dto.query.${entity}QueryDto;
+import ${package.Parent}.entity.vo.${entity}PageVo;
+import ${package.Parent}.entity.vo.${entity}ListVo;
+import ${package.Parent}.entity.vo.${entity}Vo;
+import ${package.Parent}.service.${table.serviceName};
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.cream.web.constant.ResultMessage;
+import com.cream.web.entity.Result;
+import com.cream.mpj.entity.PageResult;
+import io.swagger.annotations.*;
+import jakarta.validation.Valid;
+import java.util.List;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * $!{table.comment}Controller
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Api(tags = "$!{table.comment}")
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequiredArgsConstructor
+@RequestMapping("#if(${package.ModuleName})/api#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass}<
+        ${idClass},
+        ${entity},
+        ${entity}SaveDto,
+        ${entity}UpdateDto,
+        ${entity}QueryPageDto,
+        ${entity}QueryDto,
+        ${entity}PageVo,
+        ${entity}ListVo,
+        ${entity}Vo
+        > {
+#else
+public class ${table.controllerName} {
+#end
+
+    private final ${table.serviceName} ${table.entityPath}Service;
+
+    @Override
+    @PostMapping("/save")
+    @ApiOperation(value = "保存$!{table.comment}")
+    public Result<String> saveOne(@RequestBody @Valid ${entity}SaveDto ts) {
+        return ${table.entityPath}Service.saveOne(ts) ? Result.ok(HttpStatus.OK.value(), ResultMessage.ADD_SUCCESS) : Result.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), ResultMessage.ADD_ERROR);
+    }
+
+    @Override
+    @PostMapping("/saveBatch")
+    @ApiOperation(value = "批量保存$!{table.comment}")
+    public Result<String> saveMany(@RequestBody @Valid List<${entity}SaveDto> tsList) {
+        return ${table.entityPath}Service.saveMany(tsList) ? Result.ok(HttpStatus.OK.value(), ResultMessage.ADD_BATCH_SUCCESS) : Result.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), ResultMessage.ADD_BATCH_ERROR);
+    }
+
+    @Override
+    @DeleteMapping("/remove")
+    @ApiOperation(value = "删除$!{table.comment}")
+    public Result<String> removeOne(@RequestParam("id") ${idClass} id) {
+        return ${table.entityPath}Service.removeOne(id) ? Result.ok(HttpStatus.OK.value(), ResultMessage.DELETE_SUCCESS) : Result.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), ResultMessage.DELETE_ERROR);
+    }
+
+    @Override
+    @DeleteMapping("/removeBatch")
+    @ApiOperation(value = "批量删除$!{table.comment}")
+    public Result<String> removeMany(@RequestParam("ids") List<${idClass}> ids) {
+        return ${table.entityPath}Service.removeMany(ids) ? Result.ok(HttpStatus.OK.value(), ResultMessage.DELETE_BATCH_SUCCESS) : Result.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), ResultMessage.DELETE_BATCH_ERROR);
+    }
+
+    @Override
+    @PutMapping("/update")
+    @ApiOperation(value = "修改$!{table.comment}")
+    public Result<String> updateOne(@RequestBody @Valid ${entity}UpdateDto tu) {
+        return ${table.entityPath}Service.updateOne(tu) ? Result.ok(HttpStatus.OK.value(), ResultMessage.UPDATE_SUCCESS) : Result.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), ResultMessage.UPDATE_ERROR);
+    }
+
+    @Override
+    @PutMapping("/updateBatch")
+    @ApiOperation(value = "批量修改$!{table.comment}")
+    public Result<String> updateMany(@RequestBody @Valid List<${entity}UpdateDto> tuList) {
+        return ${table.entityPath}Service.updateMany(tuList) ? Result.ok(HttpStatus.OK.value(), ResultMessage.UPDATE_BATCH_SUCCESS) : Result.fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), ResultMessage.UPDATE_BATCH_ERROR);
+    }
+
+    @Override
+    @GetMapping("/page")
+    @ApiOperation(value = "查询$!{table.comment}分页")
+    public Result<PageResult<${entity}PageVo>> page(${entity}QueryPageDto tq) {
+        IPage<${entity}PageVo> vo = ${table.entityPath}Service.page(tq.getPageNum(), tq.getPageSize(), tq);
+        return Result.ok(HttpStatus.OK.value(), ResultMessage.QUERY_SUCCESS, new PageResult<>(vo));
+    }
+
+    @Override
+    @GetMapping("/list")
+    @ApiOperation(value = "查询$!{table.comment}列表")
+    public Result<List<${entity}ListVo>> list(${entity}QueryDto tl) {
+        return Result.ok(HttpStatus.OK.value(), ResultMessage.QUERY_SUCCESS, baseMPJService.list(tl));
+    }
+
+    @Override
+    @GetMapping("/info")
+    @ApiOperation(value = "查询$!{table.comment}明细")
+    public Result<${entity}Vo> detail(@RequestParam("id") ${idClass} id) {
+        return Result.ok(HttpStatus.OK.value(), ResultMessage.QUERY_SUCCESS, baseMPJService.detail(id));
+    }
+
+}
+#end

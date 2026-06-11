@@ -1,0 +1,65 @@
+package ${package.ServiceImpl};
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import ${package.Parent}.entity.po.${entity};
+import ${package.Parent}.entity.dto.save.${entity}SaveDto;
+import ${package.Parent}.entity.dto.update.${entity}UpdateDto;
+import ${package.Parent}.entity.dto.query.${entity}QueryPageDto;
+import ${package.Parent}.entity.dto.query.${entity}QueryDto;
+import ${package.Parent}.entity.vo.${entity}PageVo;
+import ${package.Parent}.entity.vo.${entity}ListVo;
+import ${package.Parent}.entity.vo.${entity}Vo;
+import ${package.Mapper}.${table.mapperName};
+#if(${generateService})
+import ${package.Service}.${table.serviceName};
+#end
+import ${superServiceImplClassPackage};
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * $!{table.comment}ServiceImpl
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Slf4j
+@Service
+@RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>()#if(${generateService}), ${table.serviceName}#end {
+
+}
+#else
+public class ${table.serviceImplName} extends ${superServiceImplClass}<
+        ${idClass},
+        ${entity},
+        ${entity}Mapper,
+        ${entity}SaveDto,
+        ${entity}UpdateDto,
+        ${entity}QueryPageDto,
+        ${entity}QueryDto,
+        ${entity}PageVo,
+        ${entity}ListVo,
+        ${entity}Vo
+        >#if(${generateService}) implements ${table.serviceName}#end {
+
+    @Override
+    protected Class<${entity}PageVo> getPageVoClass() {
+        return ${entity}PageVo.class;
+    }
+
+    @Override
+    protected Class<${entity}ListVo> getListVoClass() {
+        return ${entity}ListVo.class;
+    }
+
+    @Override
+    protected Class<${entity}Vo> getVoClass() {
+        return ${entity}Vo.class;
+    }
+
+}
+#end

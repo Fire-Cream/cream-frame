@@ -19,6 +19,7 @@
     <!-- 子模块 -->
     <modules>
         <module>cream-common</module>
+        <module>cream-generator</module>
         <module>cream-user</module>
     </modules>
 
@@ -63,17 +64,79 @@
                 <version>1.5.7</version>
             </dependency>
 
+            <!-- velocity engine 模板 -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>2.4.1</version>
+            </dependency>
+
+            <!-- velocity -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>1.7</version>
+            </dependency>
+
+            <!-- jetbrains annotations -->
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>26.0.2</version>
+            </dependency>
+
+            <!-- fastjson -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>2.0.51</version>
+            </dependency>
+
+            <!-- commons lang -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.18.0</version>
+            </dependency>
+
+            <!-- hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>5.8.35</version>
+            </dependency>
+
+            <!-- guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>32.0.1-android</version>
+            </dependency>
+
+            <!-- swagger 注解相关 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+
             <!-- 项目模块 -->
-            <!-- Web 模块 -->
+            <!-- Base 模块 -->
             <dependency>
                 <groupId>com.cream</groupId>
-                <artifactId>cream-common-web</artifactId>
+                <artifactId>cream-common-base</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- MPJ 模块 -->
             <dependency>
                 <groupId>com.cream</groupId>
                 <artifactId>cream-common-mpj</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- Web 模块 -->
+            <dependency>
+                <groupId>com.cream</groupId>
+                <artifactId>cream-common-web</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>
@@ -102,12 +165,12 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <!-- 不写 includes，默认包含该目录下所有文件 -->
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.yml</include>
-                    <include>**/*.yaml</include>
-                    <include>**/*.properties</include>
-                </includes>
+<!--                <includes>-->
+<!--                    <include>**/*.xml</include>-->
+<!--                    <include>**/*.yml</include>-->
+<!--                    <include>**/*.yaml</include>-->
+<!--                    <include>**/*.properties</include>-->
+<!--                </includes>-->
             </resource>
         </resources>
 

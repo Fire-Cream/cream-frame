@@ -40,7 +40,7 @@ public class SqlBeautyInterceptor implements Interceptor {
             Object parameterObject = boundSql.getParameterObject();
             List<ParameterMapping> parameterMappingList = boundSql.getParameterMappings();
             sql = formatSql(sql, parameterObject, parameterMappingList);
-            System.out.println("SQL： [ " + sql + " ]执行耗时[ " + sqlCost + "ms ]");
+            log.info("SQL： [ {} ]执行耗时[ {}ms ]", sql, sqlCost);
         }
     }
 

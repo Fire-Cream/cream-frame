@@ -1,0 +1,35 @@
+package ${package.Service};
+
+import ${package.Parent}.entity.po.${entity};
+import ${package.Parent}.entity.dto.save.${entity}SaveDto;
+import ${package.Parent}.entity.dto.update.${entity}UpdateDto;
+import ${package.Parent}.entity.dto.query.${entity}QueryPageDto;
+import ${package.Parent}.entity.dto.query.${entity}QueryDto;
+import ${package.Parent}.entity.vo.${entity}PageVo;
+import ${package.Parent}.entity.vo.${entity}ListVo;
+import ${package.Parent}.entity.vo.${entity}Vo;
+import ${superServiceClassPackage};
+
+/**
+ * $!{table.comment}Service
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${kotlin})
+interface ${table.serviceName} : ${superServiceClass}<${entity}>
+#else
+public interface ${table.serviceName} extends ${superServiceClass}<
+        ${idClass},
+        ${entity},
+        ${entity}SaveDto,
+        ${entity}UpdateDto,
+        ${entity}QueryPageDto,
+        ${entity}QueryDto,
+        ${entity}PageVo,
+        ${entity}ListVo,
+        ${entity}Vo
+        > {
+
+}
+#end
