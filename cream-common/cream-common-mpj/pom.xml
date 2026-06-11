@@ -21,6 +21,24 @@
     </properties>
 
     <dependencies>
+        <!-- Base 模块 -->
+        <dependency>
+            <groupId>com.cream</groupId>
+            <artifactId>cream-common-base</artifactId>
+        </dependency>
+
+        <!-- Web 模块 -->
+        <dependency>
+            <groupId>com.cream</groupId>
+            <artifactId>cream-common-web</artifactId>
+        </dependency>
+
+        <!-- validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- 数据库连接池 -->
         <!-- JDBC 数据库连接池 -->
         <dependency>
@@ -65,6 +83,12 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- swagger 注解相关 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
         </dependency>
     </dependencies>
 
