@@ -31,5 +31,17 @@
             <groupId>com.cream</groupId>
             <artifactId>cream-common-mpj</artifactId>
         </dependency>
+
+        <!-- Mapstruct 类型转换 -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.6.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.6.3</version>
+        </dependency>
     </dependencies>
 </project>
