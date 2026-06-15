@@ -79,8 +79,8 @@ public class TableAnnotationHandler implements ITableAnnotationHandler {
 
         // 处理Swagger注解@ApiModel（旧版Swagger）
         if (globalConfig.isSwagger()) {
-            //@ApiModel(value = "${entity}对象", description = "${table.comment!}")
-            String displayName = String.format("@ApiModel(value = \"%s对象\", description = \"%s\")", tableInfo.getEntityName(), comment);
+            //@ApiModel(value = "${entity}@Schema(name", description = "${table.comment!}")
+            String displayName = String.format("@ApiModel(value = \"%s@Schema(name\", description = \"%s\")", tableInfo.getEntityName(), comment);
             annotationAttributesList.add(new ClassAnnotationAttributes(
                     displayName, "io.swagger.annotations.ApiModel", "io.swagger.annotations.ApiModelProperty"));
         }

@@ -27,6 +27,12 @@
             <artifactId>cream-common-base</artifactId>
         </dependency>
 
+        <!-- Swagger 模块 -->
+        <dependency>
+            <groupId>com.cream</groupId>
+            <artifactId>cream-common-swagger</artifactId>
+        </dependency>
+
         <!-- Web 模块 -->
         <dependency>
             <groupId>com.cream</groupId>
@@ -83,12 +89,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-        </dependency>
-
-        <!-- swagger 注解相关 -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
         </dependency>
     </dependencies>
 

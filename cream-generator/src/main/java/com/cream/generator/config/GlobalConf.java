@@ -25,7 +25,9 @@ public class GlobalConf {
     // 开启 Kotlin 模式
     public static final Boolean enableKotlin = false;
     // 开启 Swagger 模式
-    public static final Boolean enableSwagger = true;
+    public static final Boolean enableSwagger = false;
+    // 开启 Springdoc 模式
+    public static final Boolean enableSpringDoc = true;
     // 设置时间类型策略
     public static final DateType dateType = DateType.ONLY_DATE;
     // 设置注释日期格式
@@ -40,7 +42,7 @@ public class GlobalConf {
      * @since 2026-06-09 21:52
      */
     public static GlobalConfig init(String author, String outputDir) {
-        return init(disableOpenDir, outputDir, author, enableKotlin, enableSwagger, dateType, commentDate);
+        return init(disableOpenDir, outputDir, author, enableKotlin, enableSwagger, enableSpringDoc, dateType, commentDate);
     }
 
     /**
@@ -51,13 +53,14 @@ public class GlobalConf {
      * @param author 作者
      * @param enableKotlin 开启 Kotlin 模式
      * @param enableSwagger 开启 Swagger 模式
+     * @param enableSpringDoc 开启 Springdoc 模式
      * @param dateType 设置时间类型策略
      * @param commentDate 设置注释日期格式
      * @return com.baomidou.mybatisplus.generator.config.GlobalConfig
      * @author Cream
      * @since 2026-06-09 21:52
      */
-    public static GlobalConfig init(Boolean disableOpenDir, String outputDir, String author, Boolean enableKotlin, Boolean enableSwagger, DateType dateType, String commentDate) {
+    public static GlobalConfig init(Boolean disableOpenDir, String outputDir, String author, Boolean enableKotlin, Boolean enableSwagger,Boolean enableSpringDoc, DateType dateType, String commentDate) {
         GlobalConfig.Builder builder = new GlobalConfig.Builder();
         if (disableOpenDir) {
             builder.disableOpenDir();
@@ -69,6 +72,9 @@ public class GlobalConf {
         }
         if (enableSwagger) {
             builder.enableSwagger();
+        }
+        if (enableSpringDoc) {
+            builder.enableSpringdoc();
         }
         builder.dateType(dateType);
         builder.commentDate(commentDate);

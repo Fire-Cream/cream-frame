@@ -5,21 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.cream</groupId>
-        <artifactId>cream-frame</artifactId>
+        <artifactId>cream-common</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>cream-common</artifactId>
-    <packaging>pom</packaging>
-    <description>common 模块</description>
-
-    <!-- 子模块 -->
-    <modules>
-        <module>cream-common-base</module>
-        <module>cream-common-mpj</module>
-        <module>cream-common-swagger</module>
-        <module>cream-common-web</module>
-    </modules>
+    <artifactId>cream-common-swagger</artifactId>
+    <description>swagger 模块</description>
 
     <properties>
         <java.version>21</java.version>
@@ -29,4 +20,15 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+    <dependencies>
+        <!-- SpringDoc -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+        </dependency>
+    </dependencies>
 </project>
