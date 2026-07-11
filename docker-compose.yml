@@ -1,0 +1,71 @@
+services:
+  # Minio
+  minio:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    container_name: minio
+    restart: always
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    environment:
+      MINIO_ROOT_USER: ashgod
+      MINIO_ROOT_PASSWORD: 984%4Q7#9wGKhW4TZy6&3$#D&D^SW3%F
+    volumes:
+      - D:/Dependent/Docker/Minio/data:/data
+      - D:/Dependent/Docker/Minio/config:/root/.minio
+    command: server /data --console-address ":9090" -address ":9000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - ashgod
+  # Minio 解除限制
+  mc:
+    image: minio/mc:RELEASE.2025-05-21T01-59-54Z
+    container_name: mc
+    stdin_open: true
+    tty: true
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: /bin/sh
+    networks:
+      - ashgod
+
+  # Kingbase
+  kingbase:
+    image: kingbase_v008r006c008b0020_single_x86:v1
+    container_name: kingbase
+    restart: always
+    privileged: true
+    ports:
+      - "54321:54321"
+    environment:
+      NEED_START: "yes"
+      DB_USER: ashgod
+      DB_PASSWORD: "E6NmpAf4#xtC4mD9W41#25t92b##qiDB"
+    volumes:
+      - D:/Dependent/Docker/Kingbase/data:/home/kingbase/userdata/
+    command: /usr/sbin/init
+    networks:
+      - ashgod
+
+  # Redis
+  redis:
+    image: redis:8.8
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server /etc/redis/redis.conf
+    volumes:
+      - D:/Dependent/Docker/Redis/data:/data
+      - D:/Dependent/Docker/Redis/redis.conf:/etc/redis/redis.conf
+    networks:
+      - ashgod
+
+networks:
+  ashgod:
+    driver: bridge
