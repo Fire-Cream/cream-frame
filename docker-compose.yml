@@ -1,71 +1,114 @@
 services:
-  # Minio
+  # MinIO 对象存储服务端
   minio:
+    # MinIO 镜像（2025-04-22 最后一个带完整 Web 控制台的版本）
     image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    # 容器名称
     container_name: minio
+    # 容器异常退出时自动重启
     restart: always
+    # 端口映射
     ports:
-      - "9000:9000"
-      - "9090:9090"
+      - "9000:9000"   # S3 API 端口（程序访问）
+      - "9090:9090"   # Web 控制台端口（浏览器管理）
+    # 环境变量
     environment:
+      # MinIO 管理员用户名
       MINIO_ROOT_USER: ashgod
+      # MinIO 管理员密码
       MINIO_ROOT_PASSWORD: 984%4Q7#9wGKhW4TZy6&3$#D&D^SW3%F
+    # 数据持久化目录
     volumes:
-      - D:/Dependent/Docker/Minio/data:/data
-      - D:/Dependent/Docker/Minio/config:/root/.minio
+      - D:/Dependent/Docker/Minio/data:/data              # 存储数据（桶、文件等）
+      - D:/Dependent/Docker/Minio/config:/root/.minio     # 配置文件
+    # 启动命令（指定控制台端口和 API 端口）
     command: server /data --console-address ":9090" -address ":9000"
+    # 容器健康检查
     healthcheck:
+      # 检测 MinIO 是否存活
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      # 检查间隔（30 秒）
       interval: 30s
+      # 超时时间（10 秒）
       timeout: 10s
+      # 最大重试次数
       retries: 3
+    # 加入自定义网络
     networks:
       - ashgod
-  # Minio 解除限制
+
+  # MinIO 客户端工具（MC）
   mc:
+    # MC 镜像版本
     image: minio/mc:RELEASE.2025-05-21T01-59-54Z
+    # 容器名称
     container_name: mc
+    # 保持标准输入开放（支持交互式终端）
     stdin_open: true
+    # 分配伪终端（支持 -it 交互）
     tty: true
+    # 依赖配置（等 MinIO 健康检查通过后才启动）
     depends_on:
       minio:
         condition: service_healthy
+    # 入口点为 sh（进入容器后手动执行 mc 命令）
     entrypoint: /bin/sh
+    # 加入自定义网络
     networks:
       - ashgod
 
-  # Kingbase
+  # KingbaseES 国产数据库
   kingbase:
+    # KingbaseES 镜像（V8R6C8B20 单机版）
     image: kingbase_v008r006c008b0020_single_x86:v1
+    # 容器名称
     container_name: kingbase
+    # 容器异常退出时自动重启
     restart: always
+    # 特权模式（KingbaseES 需要）
     privileged: true
+    # 端口映射（数据库默认端口 54321）
     ports:
       - "54321:54321"
+    # 环境变量
     environment:
+      # 是否自动启动数据库
       NEED_START: "yes"
+      # 数据库管理员用户名
       DB_USER: ashgod
+      # 数据库管理员密码
       DB_PASSWORD: "E6NmpAf4#xtC4mD9W41#25t92b##qiDB"
+    # 数据持久化目录
     volumes:
-      - D:/Dependent/Docker/Kingbase/data:/home/kingbase/userdata/
+      - D:/Dependent/Docker/Kingbase/data:/home/kingbase/userdata/  # 数据库数据文件
+    # 启动 init 进程（KingbaseES 官方推荐方式）
     command: /usr/sbin/init
+    # 加入自定义网络
     networks:
       - ashgod
 
-  # Redis
+  # Redis 缓存数据库
   redis:
+    # Redis 镜像版本
     image: redis:8.8
+    # 容器名称
     container_name: redis
+    # 容器异常退出时自动重启
     restart: always
+    # 端口映射
     ports:
       - "6379:6379"
+    # 启动命令（使用自定义配置文件启动）
     command: redis-server /etc/redis/redis.conf
+    # 数据持久化目录
     volumes:
-      - D:/Dependent/Docker/Redis/data:/data
-      - D:/Dependent/Docker/Redis/redis.conf:/etc/redis/redis.conf
+      - D:/Dependent/Docker/Redis/data:/data                  # Redis 数据文件（AOF/RDB）
+      - D:/Dependent/Docker/Redis/redis.conf:/etc/redis/redis.conf  # 自定义配置文件
+    # 加入自定义网络
     networks:
       - ashgod
 
+# 自定义网络（所有服务通过容器名互相访问）
 networks:
   ashgod:
     driver: bridge
