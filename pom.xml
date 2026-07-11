@@ -138,6 +138,12 @@
                 <artifactId>cream-common-mpj</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <!-- Redis 模块 -->
+            <dependency>
+                <groupId>com.cream</groupId>
+                <artifactId>cream-common-redis</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!-- Swagger 模块 -->
             <dependency>
                 <groupId>com.cream</groupId>

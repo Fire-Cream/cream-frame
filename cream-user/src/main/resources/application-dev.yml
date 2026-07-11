@@ -1,0 +1,116 @@
+server:
+  # 服务端口号
+  port: 8080
+
+spring:
+  # Jackson 序列化配置
+  jackson:
+    # 时区设置为东八区
+    time-zone: GMT+8
+    # 日期格式化格式
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  # 数据源配置
+  datasource:
+    # 数据库连接地址（KGB）
+    url: jdbc:kingbase8://localhost:54321/cream-frame
+    # 数据库驱动类名
+    driver-class-name: com.kingbase8.Driver
+    # 数据库用户名
+    username: ashgod
+    # 数据库密码
+    password: E6NmpAf4#xtC4mD9W41#25t92b##qiDB
+    # 连接池类型（使用 Druid）
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    # Druid 连接池详细配置
+    druid:
+      # 连接有效性检测 SQL（验证连接是否存活）
+      validation-query: SELECT 1
+      # 初始连接数（启动时创建的连接数量）
+      initial-size: 20
+      # 最小空闲连接数（保持的最少空闲连接）
+      min-idle: 20
+      # 最大活跃连接数（连接池最大连接数量）
+      max-active: 100
+      # 获取连接最大等待时间（毫秒），超时抛异常
+      max-wait: 60000
+
+      # Druid 图形化监控面板
+      stat-view-servlet:
+        # 是否启用监控页面
+        enabled: true
+        # 监控页面访问路径
+        url-pattern: /druid/*
+        # 监控页面登录用户名
+        login-username: admin
+        # 监控页面登录密码
+        login-password: 123456
+
+      # Druid 过滤器配置
+      filter:
+        # SQL 监控统计过滤器
+        stat:
+          # 是否启用 SQL 统计
+          enabled: true
+          # 是否记录慢 SQL
+          log-slow-sql: true
+          # 慢 SQL 阈值（毫秒），超过此时间视为慢 SQL
+          slow-sql-millis: 2000
+        # Druid 防火墙过滤器
+        wall:
+          # 是否启用防火墙（KGB 不支持，关闭）
+          enabled: false
+
+  # Redis 配置
+  data:
+    redis:
+      # Redis 服务器地址
+      host: localhost
+      # Redis 端口号
+      port: 6379
+      # 使用第 0 个数据库
+      database: 0
+      # Redis 密码
+      password: c#7#6ik6R3$dF*F*$GB#@6WqSjp9T&KS
+
+      # Lettuce 连接池配置（Redis 客户端连接池）
+      lettuce:
+        pool:
+          # 最大活跃连接数
+          max-active: 20
+          # 最大空闲连接数
+          max-idle: 8
+          # 获取连接最大等待时间（-1 表示无限等待）
+          max-wait: -1ms
+          # 最小空闲连接数
+          min-idle: 0
+
+# MyBatis-Plus Join 配置（优化 SQL 监控展示）
+mpj:
+  # 是否开启美化的 SQL 展示（方便调试查看 SQL）
+  beauty-show: true
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  global-config:
+    db-config:
+      # 逻辑删除字段名（数据库中对应的字段）
+      logic-delete-field: deleted
+      # 已删除的值（1 表示已删除）
+      logic-delete-value: 1
+      # 未删除的值（0 表示未删除）
+      logic-not-delete-value: 0
+
+# SpringDoc（Swagger）配置
+springdoc:
+  swagger-ui:
+    # Swagger UI 访问路径
+    path: /swagger-ui.html
+    # 是否启用 Swagger UI 界面
+    enabled: true
+  api-docs:
+    # API 文档 JSON 的访问路径
+    path: /v3/api-docs
+    # 是否启用 API 文档
+    enabled: true

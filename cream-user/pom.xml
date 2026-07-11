@@ -21,15 +21,20 @@
     </properties>
 
     <dependencies>
-        <!-- Web 模块 -->
-        <dependency>
-            <groupId>com.cream</groupId>
-            <artifactId>cream-common-web</artifactId>
-        </dependency>
         <!-- MPJ 模块 -->
         <dependency>
             <groupId>com.cream</groupId>
             <artifactId>cream-common-mpj</artifactId>
+        </dependency>
+        <!-- Redis 模块 -->
+        <dependency>
+            <groupId>com.cream</groupId>
+            <artifactId>cream-common-redis</artifactId>
+        </dependency>
+        <!-- Web 模块 -->
+        <dependency>
+            <groupId>com.cream</groupId>
+            <artifactId>cream-common-web</artifactId>
         </dependency>
 
         <!-- Mapstruct 类型转换 -->
