@@ -19,6 +19,16 @@ public class DataSourceConf {
     // 数据库产品名称（通过JDBC元数据获取，初始化时缓存）
     private static String dbProductName;
 
+    /**
+     * 初始化数据库配置
+     *
+     * @param jdbcUrl 数据库url
+     * @param username 用户名
+     * @param password 密码
+     * @return com.baomidou.mybatisplus.generator.config.DataSourceConfig
+     * @author Cream
+     * @since 2026-07-11 22:40
+     */
     public static DataSourceConfig init(String jdbcUrl, String username, String password) {
         DataSourceConfig dataSourceConfig = new DataSourceConfig.Builder(jdbcUrl, username, password).typeConvertHandler(new CustomTypeConvertHandler()).build();
 
