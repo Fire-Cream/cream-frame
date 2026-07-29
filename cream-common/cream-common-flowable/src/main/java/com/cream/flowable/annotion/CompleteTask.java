@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CompleteTask {
 
-    // 当前审批人 todo 整合 security 之后就可以改为下一节点审核人了，无需map传递
+    // 当前审批人
     String assignee() default "#{#assignee}";
 
     // 根据业务KEY找当前任务

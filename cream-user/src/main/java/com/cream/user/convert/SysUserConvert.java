@@ -6,6 +6,7 @@ import com.cream.user.entity.dto.save.SysUserSaveDto;
 import com.cream.user.entity.dto.update.SysUserUpdateDto;
 import com.cream.user.entity.po.SysUserPo;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -14,7 +15,7 @@ import org.mapstruct.factory.Mappers;
  * @author Cream
  * @since 2026-06-14 23:02
  */
-@Mapper
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SysUserConvert {
 
     SysUserConvert INSTANCE = Mappers.getMapper(SysUserConvert.class);

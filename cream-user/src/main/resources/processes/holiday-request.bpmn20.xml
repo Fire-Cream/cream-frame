@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef"
+             exporter="Flowable Open Source Modeler" exporterVersion="6.8.0">
+    <process id="holidayRequest" name="Holiday Request" isExecutable="true">
+        <startEvent id="startEvent" flowable:formFieldValidation="true"></startEvent>
+        <userTask id="approveTask" name="审批或拒绝" flowable:formFieldValidation="true" flowable:assignee="${assignee}"></userTask>
+        <sequenceFlow id="sid-D2E36EC1-8B5C-4769-B3E1-593246DD8957" sourceRef="startEvent" targetRef="approveTask"></sequenceFlow>
+        <exclusiveGateway id="decision"></exclusiveGateway>
+        <sequenceFlow id="sid-03CAFC9C-DDDA-4B98-8F4B-1FF982CB5473" sourceRef="approveTask" targetRef="decision"></sequenceFlow>
+        <serviceTask id="externalSystemCall" name="在外部系统设置假期天数" flowable:class="com.cream.user.service.CallExternalSystemDelegate"></serviceTask>
+        <userTask id="holidayApprovedTask" name="假期审批" flowable:formFieldValidation="true" flowable:assignee="${assignee}"></userTask>
+        <sequenceFlow id="sid-934F1752-FCB1-483E-A576-AA7025AEC872" sourceRef="externalSystemCall" targetRef="holidayApprovedTask"></sequenceFlow>
+        <endEvent id="approveEnd"></endEvent>
+        <sequenceFlow id="sid-F844C4E2-DD9B-4B53-AFBC-E0CECD93E32A" sourceRef="holidayApprovedTask" targetRef="approveEnd"></sequenceFlow>
+        <serviceTask id="sendRejectionMail" name="发送拒绝邮件" flowable:class="com.cream.user.service.SendRejectionMail"></serviceTask>
+        <endEvent id="rejectEnd"></endEvent>
+        <sequenceFlow id="sid-10BABDCB-7336-4AD0-85D6-B43CF31059E9" sourceRef="sendRejectionMail" targetRef="rejectEnd"></sequenceFlow>
+        <sequenceFlow id="sid-640C2272-E308-4925-9693-400A78DF73E4" sourceRef="decision" targetRef="externalSystemCall">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approved}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-F537DACA-E8FA-4FB8-B381-4ECB243DD2F0" sourceRef="decision" targetRef="sendRejectionMail">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!approved}]]></conditionExpression>
+        </sequenceFlow>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_holidayRequest">
+        <bpmndi:BPMNPlane bpmnElement="holidayRequest" id="BPMNPlane_holidayRequest">
+            <bpmndi:BPMNShape bpmnElement="startEvent" id="BPMNShape_startEvent">
+                <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="163.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="approveTask" id="BPMNShape_approveTask">
+                <omgdc:Bounds height="80.0" width="100.0" x="175.0" y="138.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="decision" id="BPMNShape_decision">
+                <omgdc:Bounds height="40.0" width="40.0" x="320.0" y="158.0"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="externalSystemCall" id="BPMNShape_externalSystemCall">
+                <omgdc:Bounds height="80.0" width="100.00000000000006" x="389.9999535083805" y="137.99999099969904"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="holidayApprovedTask" id="BPMNShape_holidayApprovedTask">
+                <omgdc:Bounds height="80.0" width="100.0" x="534.9999767541896" y="137.99999588727962"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="approveEnd" id="BPMNShape_approveEnd">
+                <omgdc:Bounds height="28.0" width="28.0" x="674.999979883433" y="163.99999511241927"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sendRejectionMail" id="BPMNShape_sendRejectionMail">
+                <omgdc:Bounds height="80.0" width="100.00000000000006" x="389.99996513128485" y="254.99998480081626"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="rejectEnd" id="BPMNShape_rejectEnd">
+                <omgdc:Bounds height="28.0" width="28.0" x="534.9999651312849" y="280.99998480081626"></omgdc:Bounds>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="sid-934F1752-FCB1-483E-A576-AA7025AEC872" id="BPMNEdge_sid-934F1752-FCB1-483E-A576-AA7025AEC872" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+                <omgdi:waypoint x="489.94995350838053" y="177.999992683386"></omgdi:waypoint>
+                <omgdi:waypoint x="534.999976530612" y="177.99999420190727"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-F844C4E2-DD9B-4B53-AFBC-E0CECD93E32A" id="BPMNEdge_sid-F844C4E2-DD9B-4B53-AFBC-E0CECD93E32A" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+                <omgdi:waypoint x="634.9499732228287" y="177.99999551475062"></omgdi:waypoint>
+                <omgdi:waypoint x="674.9999789486717" y="177.99999521635488"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-F537DACA-E8FA-4FB8-B381-4ECB243DD2F0" id="BPMNEdge_sid-F537DACA-E8FA-4FB8-B381-4ECB243DD2F0" flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="50.00000000000003" flowable:targetDockerY="40.0">
+                <omgdi:waypoint x="340.5" y="197.44187392689958"></omgdi:waypoint>
+                <omgdi:waypoint x="340.5" y="294.99998480081626"></omgdi:waypoint>
+                <omgdi:waypoint x="389.9999651312822" y="294.99998480081626"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-D2E36EC1-8B5C-4769-B3E1-593246DD8957" id="BPMNEdge_sid-D2E36EC1-8B5C-4769-B3E1-593246DD8957" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+                <omgdi:waypoint x="129.9499984899576" y="178.0"></omgdi:waypoint>
+                <omgdi:waypoint x="174.9999999999917" y="178.0"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-03CAFC9C-DDDA-4B98-8F4B-1FF982CB5473" id="BPMNEdge_sid-03CAFC9C-DDDA-4B98-8F4B-1FF982CB5473" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.5" flowable:targetDockerY="20.5">
+                <omgdi:waypoint x="274.94999999999806" y="178.21623376623378"></omgdi:waypoint>
+                <omgdi:waypoint x="320.4130434782609" y="178.4130434782609"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-10BABDCB-7336-4AD0-85D6-B43CF31059E9" id="BPMNEdge_sid-10BABDCB-7336-4AD0-85D6-B43CF31059E9" flowable:sourceDockerX="50.000000000000036" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+                <omgdi:waypoint x="489.94996513121885" y="294.99998480081626"></omgdi:waypoint>
+                <omgdi:waypoint x="534.9999651312849" y="294.99998480081626"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-640C2272-E308-4925-9693-400A78DF73E4" id="BPMNEdge_sid-640C2272-E308-4925-9693-400A78DF73E4" flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="50.00000000000003" flowable:targetDockerY="40.0">
+                <omgdi:waypoint x="359.5360512142339" y="178.4040386229212"></omgdi:waypoint>
+                <omgdi:waypoint x="389.9999535083784" y="178.2510006603511"></omgdi:waypoint>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

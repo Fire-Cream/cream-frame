@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 测试
+ * redis测试类
  *
  * @author Cream
  * @since 2026-07-11 20:46
  */
 @RestController
 @RequiredArgsConstructor
-public class TestController {
+public class RedisController {
 
     private final RedisTemplate<String, Object> redisTemplate;
 

@@ -114,3 +114,20 @@ springdoc:
     path: /v3/api-docs
     # 是否启用 API 文档
     enabled: true
+
+# Flowable 流程引擎配置
+flowable:
+  # 是否自动部署流程定义（扫描 processes/ 目录下的 bpmn 文件）
+  check-process-definitions: true
+  # 数据库 schema 更新策略（true=自动更新表结构）
+  database-schema-update: true
+  # 是否使用数据库历史记录
+  db-history-used: true
+  # 流程定义文件扫描路径
+  process-definition-location-prefix: classpath*:/processes/
+  # 流程定义文件后缀名
+  process-definition-location-suffixes:
+    - "**.bpmn20.xml"
+    - "**.bpmn"
+  # 是否启用异步执行器（处理异步任务、定时器等）
+  async-executor-activate: true

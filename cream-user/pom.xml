@@ -21,6 +21,11 @@
     </properties>
 
     <dependencies>
+        <!-- Flowable 模块 -->
+        <dependency>
+            <groupId>com.cream</groupId>
+            <artifactId>cream-common-flowable</artifactId>
+        </dependency>
         <!-- MPJ 模块 -->
         <dependency>
             <groupId>com.cream</groupId>
@@ -37,6 +42,19 @@
             <artifactId>cream-common-web</artifactId>
         </dependency>
 
+        <!-- Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- JUnit Platform Launcher -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Mapstruct 类型转换 -->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -49,4 +67,5 @@
             <version>1.6.3</version>
         </dependency>
     </dependencies>
+
 </project>
