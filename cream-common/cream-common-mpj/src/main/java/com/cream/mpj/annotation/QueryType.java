@@ -8,7 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * 查询注解 <br>
+ * 跟工具类联动，自动生成查询条件
  *
  * @author Cream
  * @since 2026-06-09 22:50

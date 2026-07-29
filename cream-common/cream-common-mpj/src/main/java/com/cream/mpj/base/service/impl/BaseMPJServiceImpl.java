@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * BaseMPJServiceImpl 基础类
+ *
  * @param <ID>  主键类型
  * @param <T>   实体类
  * @param <D>   Mapper

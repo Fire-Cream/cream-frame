@@ -16,6 +16,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Controller 基础类
+ *
  * @param <ID>  主键类型
  * @param <T>   实体类
  * @param <TSD> 保存DTO
