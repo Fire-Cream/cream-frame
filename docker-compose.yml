@@ -5,8 +5,8 @@ services:
     image: minio/minio:RELEASE.2025-04-22T22-12-26Z
     # 容器名称
     container_name: minio
-    # 容器异常退出时自动重启
-    restart: always
+    # 容器重启规则
+    restart: no
     # 端口映射
     ports:
       - "9000:9000"   # S3 API 端口（程序访问）
@@ -17,6 +17,8 @@ services:
       MINIO_ROOT_USER: ashgod
       # MinIO 管理员密码
       MINIO_ROOT_PASSWORD: 984%4Q7#9wGKhW4TZy6&3$#D&D^SW3%F
+      # 关闭更新检查提示
+      MINIO_UPDATE: "off"
     # 数据持久化目录
     volumes:
       - D:/Dependent/Docker/Minio/data:/data              # 存储数据（桶、文件等）
@@ -26,7 +28,7 @@ services:
     # 容器健康检查
     healthcheck:
       # 检测 MinIO 是否存活
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       # 检查间隔（30 秒）
       interval: 30s
       # 超时时间（10 秒）
@@ -43,8 +45,12 @@ services:
     image: minio/mc:RELEASE.2025-05-21T01-59-54Z
     # 容器名称
     container_name: mc
+    # 容器重启规则
+    restart: no
     # 保持标准输入开放（支持交互式终端）
     stdin_open: true
+    volumes:
+      - D:/Dependent/Docker/MC/config:/root/.mc
     # 分配伪终端（支持 -it 交互）
     tty: true
     # 依赖配置（等 MinIO 健康检查通过后才启动）
@@ -63,8 +69,8 @@ services:
     image: kingbase_v008r006c008b0020_single_x86:v1
     # 容器名称
     container_name: kingbase
-    # 容器异常退出时自动重启
-    restart: always
+    # 容器重启规则
+    restart: no
     # 特权模式（KingbaseES 需要）
     privileged: true
     # 端口映射（数据库默认端口 54321）
@@ -93,8 +99,8 @@ services:
     image: redis:8.8
     # 容器名称
     container_name: redis
-    # 容器异常退出时自动重启
-    restart: always
+    # 容器重启规则
+    restart: no
     # 端口映射
     ports:
       - "6379:6379"
@@ -104,6 +110,23 @@ services:
     volumes:
       - D:/Dependent/Docker/Redis/data:/data                  # Redis 数据文件（AOF/RDB）
       - D:/Dependent/Docker/Redis/redis.conf:/etc/redis/redis.conf  # 自定义配置文件
+    # 加入自定义网络
+    networks:
+      - ashgod
+
+  #  Flowable UI 设计器
+  flowable-ui:
+    # 镜像名称和版本
+    image: flowable/flowable-ui:6.8.0
+    # 容器名称
+    container_name: flowable
+    # 容器重启规则
+    restart: no
+    # 端口映射
+    # 访问地址：http://localhost:18080/flowable-ui
+    # 默认账号密码： admin / test
+    ports:
+      - "18080:8080"
     # 加入自定义网络
     networks:
       - ashgod
