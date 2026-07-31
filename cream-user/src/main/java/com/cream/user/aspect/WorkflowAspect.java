@@ -1,24 +1,19 @@
 package com.cream.user.aspect;
 
 import com.cream.base.spel.entity.SpELEvaluationContext;
-import com.cream.base.spel.entity.SpELObject;
-import com.cream.base.spel.evaluator.SpELEvaluator;
-import com.cream.flowable.annotion.ClaimTask;
+import com.cream.base.spel.utils.SpELUtils;
 import com.cream.flowable.annotion.CompleteTask;
 import com.cream.flowable.annotion.StartProcess;
 import com.cream.flowable.aspect.AbstractWorkflowService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.aop.framework.AopProxyUtils;
+import org.flowable.engine.runtime.ProcessInstance;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * 工作流切面实现
@@ -32,103 +27,61 @@ import java.util.Map;
 public class WorkflowAspect extends AbstractWorkflowService {
 
     /**
-     * 日志SpEL解析器
-     */
-    private final SpELEvaluator evaluator = new SpELEvaluator();
-
-    /**
-     * 实现获取当前用户
-     */
-    @Override
-    protected String resolveCurrentUser() {
-        // todo 等 security 模块实现后，再来实现
-        return "张三";
-    }
-
-    /**
      * 处理 @StartProcess
      */
-    @Around("@annotation(com.cream.flowable.annotion.StartProcess)")
-    public Object aroundStartProcess(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("@annotation(startProcess)")
+    public Object aroundStartProcess(ProceedingJoinPoint joinPoint, StartProcess startProcess) throws Throwable {
         Object result = joinPoint.proceed();
-
-        Signature signature = joinPoint.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
-
-        Method method = methodSignature.getMethod();
-        Object[] args = joinPoint.getArgs();
-        Class<?> targetClass = AopProxyUtils.ultimateTargetClass(joinPoint.getTarget());
-
-        // SpEL解析
-        StartProcess annotation = method.getAnnotation(StartProcess.class);
-        SpELObject spELObject = new SpELObject(method, args, targetClass);
-        SpELEvaluationContext context = new SpELEvaluationContext(spELObject, evaluator.getDiscoverer());
-        String processKey = evaluator.parse(annotation.processKey(), context).toString();
-        String businessKey = evaluator.parse(annotation.businessKey(), context).toString();
-
-        Map<String, Object> variables = extractVariables(joinPoint);
-        doStartProcess(processKey, businessKey, variables);
-
+        try {
+            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+            // SpEL解析
+            SpELEvaluationContext context = SpELUtils.build(signature.getMethod(), joinPoint.getArgs());
+            String processKey = SpELUtils.parse(startProcess.processKey(), context);
+            String businessKey = SpELUtils.parse(startProcess.businessKey(), context);
+            HashMap<String, Object> variables = SpELUtils.parse(startProcess.variables(), context);
+            String initiator = SpELUtils.parse(startProcess.initiator(), context);
+            // 开启流程
+            ProcessInstance processInstance = startProcess(processKey, businessKey, variables, initiator);
+            log.info("流程启动成功: processKey={}, businessKey={}", processKey, businessKey);
+            // 将流程ID绑定到业务实体
+        }catch (Exception e) {
+            log.error("[startProcess]:流程启动失败", e);
+            // 注解操作失败不影响原方法的返回值，但抛出异常让调用方感知
+            throw new RuntimeException("流程启动失败: " + e.getMessage(), e);
+        }
         return result;
     }
 
     /**
      * 处理 @CompleteTask
      */
-    @Around("@annotation(com.cream.flowable.annotion.CompleteTask)")
-    public Object aroundCompleteTask(ProceedingJoinPoint joinPoint) throws Throwable {
-
-        Signature signature = joinPoint.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
-
-        Method method = methodSignature.getMethod();
-        Object[] args = joinPoint.getArgs();
-        Class<?> targetClass = AopProxyUtils.ultimateTargetClass(joinPoint.getTarget());
-
-        // SpEL解析
-        CompleteTask annotation = method.getAnnotation(CompleteTask.class);
-        SpELObject spELObject = new SpELObject(method, args, targetClass);
-        SpELEvaluationContext context = new SpELEvaluationContext(spELObject, evaluator.getDiscoverer());
-        String assignee = evaluator.parse(annotation.assignee(), context).toString();
-        String businessKey = evaluator.parse(annotation.businessKey(), context).toString();
-
-        Map<String, Object> variables = extractVariables(joinPoint);
-
-        doCompleteTask(businessKey, assignee, variables);
-
-        return joinPoint.proceed();
-    }
-
-    /**
-     * 处理 @ClaimTask
-     */
-    @Around("@annotation(claimTask)")
-    public Object aroundClaimTask(ProceedingJoinPoint joinPoint,
-                                  ClaimTask claimTask) throws Throwable {
-        String businessKey = resolveBusinessKey(claimTask.businessKey(), joinPoint);
-        String assignee = claimTask.assignee().isEmpty()
-                ? resolveCurrentUser()
-                : claimTask.assignee();
-
-        doClaimTask(businessKey, assignee);
-
-        return joinPoint.proceed();
-    }
-
-    private String resolveBusinessKey(String expression, ProceedingJoinPoint jp) {
-        if (StringUtils.isNotBlank(expression)) {
-            return expression;
-        }
-        Object[] args = jp.getArgs();
-        for (Object arg : args) {
-            if (arg instanceof Map) {
-                Object bk = ((Map<?, ?>) arg).get("businessKey");
-                if (bk != null) {
-                    return bk.toString();
-                }
+    @Around("@annotation(completeTask)")
+    public Object aroundCompleteTask(ProceedingJoinPoint joinPoint, CompleteTask completeTask) throws Throwable {
+        // 执行原方法
+        Object proceed = joinPoint.proceed();
+        try {
+            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+            // SpEL解析
+            SpELEvaluationContext context = SpELUtils.build(signature.getMethod(), joinPoint.getArgs());
+            String businessKey = SpELUtils.parse(completeTask.businessKey(), context);
+            String assignee = SpELUtils.parse(completeTask.assignee(), context);
+            HashMap<String, Object> variables = SpELUtils.parse(completeTask.variables(), context);
+            Integer approved = SpELUtils.parse(completeTask.approved(), context);
+            String comment = SpELUtils.parse(completeTask.comment(), context);
+            // 注入审批结果变量
+            if (variables == null) {
+                variables = new HashMap<>();
             }
+            variables.put("approved", approved);
+            // 完成任务
+            completeTaskByBusinessKey(businessKey, assignee, variables, comment);
+            log.info("任务完成成功: businessKey={}, assignee={}, approved={}", businessKey, assignee, approved);
+            // 记录到审核记录里面去
+        } catch (Exception e) {
+            log.error("[completeTask]:任务完成失败", e);
+            throw new RuntimeException("任务完成失败: " + e.getMessage(), e);
         }
-        return "";
+        return proceed;
     }
 
 }

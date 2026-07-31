@@ -15,10 +15,29 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CompleteTask {
 
-    // 当前审批人
+    /**
+     * 业务KEY (用于定位流程实例)
+     */
+    String businessKey() default "#{#businessKey}";
+
+    /**
+     * 当前审批人 (用于定位当前任务)
+     */
     String assignee() default "#{#assignee}";
 
-    // 根据业务KEY找当前任务
-    String businessKey() default "#{#businessKey}";
+    /**
+     * 任务变量 (一般是Map)
+     */
+    String variables() default "#{#variables}";
+
+    /**
+     * 审批结果
+     */
+    String approved() default "#{#approved}";
+
+    /**
+     * 审批意见
+     */
+    String comment() default "#{#comment}";
 
 }

@@ -15,10 +15,24 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StartProcess {
 
-    // 流程定义KEY
+    /**
+     * 流程定义KEY
+     */
     String processKey() default "#{#processKey}";
 
-    // 业务KEY，支持 SpEL
+    /**
+     * 业务KEY
+     */
     String businessKey() default "#{#businessKey}";
+
+    /**
+     * 流程变量
+     */
+    String variables() default "#{#variables}";
+
+    /**
+     * 流程发起人
+     */
+    String initiator() default "#{#initiator}";
 
 }
