@@ -1,4 +1,4 @@
-package com.cream.flowable.aspect;
+package com.cream.flowable.service;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 工作流抽象服务 <br>
- * 需要子类继承并实现
+ * 工作流抽象服务
  *
  * @author Cream
  * @since 2026-07-12 18:54

@@ -1,6 +1,6 @@
 package com.cream.user.controller;
 
-import com.cream.user.service.FlowableService;
+import com.cream.flowable.service.WorkflowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class FlowableController {
 
-    private final FlowableService flowableService;
+    private final WorkflowService workflowService;
 
     @GetMapping("/startProcess")
     public void startProcess() {
@@ -25,15 +25,14 @@ public class FlowableController {
         variables.put("assignee", "张三");
         variables.put("dayOfHolidays", 3);
         variables.put("description", "年假");
-        flowableService.startProcess("holidayRequest","114514", variables);
+        workflowService.startProcess("holidayRequest","114514", variables, "小米");
     }
 
     @GetMapping("/completeTask")
     public void completeTask() {
         HashMap<String, Object> variables = new HashMap<>();
         variables.put("assignee", "李四");
-        variables.put("approved", true);
-        flowableService.completeTask("张三", "114514", variables);
+        workflowService.completeTask("张三", "114514", variables, 0, "同意");
     }
 
 }
