@@ -38,10 +38,11 @@ public class SpELEvaluator {
      *
      * @param expression 表达式
      * @param context    日志表达式上下文
-     * @return 表达式结果
+     * @return T 表达式结果
      */
-    public Object parse(String expression, SpELEvaluationContext context) {
-        return getExpression(expression).getValue(context);
+    @SuppressWarnings("unchecked")
+    public <T> T parse(String expression, SpELEvaluationContext context) {
+        return (T) getExpression(expression).getValue(context);
     }
 
     /**
